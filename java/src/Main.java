@@ -31,16 +31,16 @@ class Main {
             }
         }
 
-        connection.close();
+        BasicMethod.run(connection);
 
-        
+        connection.close();
     }
 
     public static Connection getDatabaseConnection() {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            System.out.println("Erreur lors du chargement du pilote JDBC : " + e.getMessage());
+            System.out.println("Issue loading JDBC driver : " + e.getMessage());
         }
 
         String url = "jdbc:postgresql://large-data-process-database:5432/db";
@@ -50,9 +50,9 @@ class Main {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url, user, password);
-            System.out.println("Connexion réussie à la base de données PostgreSQL !");
+            System.out.println("Successful database connection.");
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la connexion à la base de données : " + e.getMessage());
+            System.out.println("Issue trying to connect database : " + e.getMessage());
         }
 
         return connection;
