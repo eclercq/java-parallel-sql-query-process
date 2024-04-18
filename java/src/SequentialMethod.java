@@ -3,7 +3,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class BasicMethod {
+public class SequentialMethod {
     
     public static void run(Connection connection) {
         long startTime = System.currentTimeMillis();
@@ -14,22 +14,17 @@ public class BasicMethod {
 
         try {
             stmt = connection.createStatement();
+            stmt.setFetchSize(1000);
 
             String query = "SELECT * FROM test_table";
 
-            System.out.println("Executing SELECT query...");
             rs = stmt.executeQuery(query);
-            
-            System.out.println("SELECT query executed.");
-            System.out.println("Processing results...");
             while (rs.next()) {
-                DataProcessor.processOneRow();
+                DataProcessor.processOneRow(rs);
             }
-            System.out.println("Results processed.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
 
         long endTime = System.currentTimeMillis();
         long timeElapsed = endTime - startTime;

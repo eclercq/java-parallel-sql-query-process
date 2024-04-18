@@ -21,7 +21,7 @@ class Main {
                         dbInitialized = true;
                         System.out.println("Database initialized! (" + rowCount + " lines)");
                     } else {
-                        Thread.sleep(5000);
+                        Thread.sleep(2000);
                     }
                 }
                 resultSet.close();
@@ -31,7 +31,9 @@ class Main {
             }
         }
 
-        BasicMethod.run(connection);
+        SequentialMethod.run(connection);
+        
+        ParallelMethod.run(connection);
 
         connection.close();
     }
@@ -43,16 +45,17 @@ class Main {
             System.out.println("Issue loading JDBC driver : " + e.getMessage());
         }
 
-        String url = "jdbc:postgresql://large-data-process-database:5432/db";
+        String url = "jdbc:postgresql://parallel-data-process-database:5432/db";
         String user = "postgres";
         String password = "password";
 
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url, user, password);
+            connection.setAutoCommit(false);
             System.out.println("Successful database connection.");
         } catch (SQLException e) {
-            System.out.println("Issue trying to connect database : " + e.getMessage());
+            e.printStackTrace();
         }
 
         return connection;

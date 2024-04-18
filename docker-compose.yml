@@ -1,10 +1,10 @@
 networks:
-  large-data-process-network:
+  parallel-data-process-network:
 
 services:
   postgres:
     image: postgres:14-alpine
-    container_name: large-data-process-database
+    container_name: parallel-data-process-database
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -12,21 +12,21 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - large-data-process-network
+      - parallel-data-process-network
 
   alpine_script_runner:
     build: database
-    container_name: large-data-process-alpine
+    container_name: parallel-data-process-alpine
     depends_on:
       - postgres
     networks:
-      - large-data-process-network
+      - parallel-data-process-network
 
   java_app:
     build: java
-    container_name: large-data-process-jvm
+    container_name: parallel-data-process-jvm
     depends_on:
       - postgres
       - alpine_script_runner
     networks:
-      - large-data-process-network
+      - parallel-data-process-network
