@@ -2,12 +2,15 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Logger;
 
 public class SequentialMethod {
+
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
     
     public static void run(Connection connection) {
         long startTime = System.currentTimeMillis();
-        System.out.println("Starting basic method...");
+        logger.info("Starting basic method...");
 
         Statement stmt = null;
         ResultSet rs = null;
@@ -23,12 +26,12 @@ public class SequentialMethod {
                 DataProcessor.processOneRow(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+           logger.severe(e.getMessage());;
         }
 
         long endTime = System.currentTimeMillis();
         long timeElapsed = endTime - startTime;
 
-        System.out.println("Basic method ended : " + timeElapsed + "ms");
+        logger.info("Basic method ended : " + timeElapsed + "ms");
     }
 }

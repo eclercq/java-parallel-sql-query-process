@@ -1,12 +1,15 @@
 import java.sql.Connection;
+import java.util.logging.Logger;
 
 public class ParallelMethod {
+
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
 
     private static final int MAX_THREADS = 3; 
     
     public static void run(Connection connection) {
         long startTime = System.currentTimeMillis();
-        System.out.println("Starting enhanced method...");
+        logger.info("Starting enhanced method...");
 
         String query = "SELECT * FROM test_table";
 
@@ -19,6 +22,6 @@ public class ParallelMethod {
         long endTime = System.currentTimeMillis();
         long timeElapsed = endTime - startTime;
 
-        System.out.println("Enhanced method ended : " + timeElapsed + "ms");
+        logger.info("Enhanced method ended : " + timeElapsed + "ms");
     }
 }

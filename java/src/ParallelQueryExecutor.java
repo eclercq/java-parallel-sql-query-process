@@ -7,8 +7,11 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public class ParallelQueryExecutor {
+
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
 
     private final int DEFAULT_FETCH_SIZE = 1000;
 
@@ -39,13 +42,13 @@ public class ParallelQueryExecutor {
             }
             executorService.invokeAll(tasks);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
             Thread.currentThread().interrupt();
         } finally {
-            try { if (rs[0] != null) rs[0].close(); } catch (SQLException e) {};
-            try { if (stmt != null) stmt.close(); } catch (SQLException e) {};
+            try { if (rs[0] != null) rs[0].close(); } catch (SQLException e) {logger.severe(e.getMessage());};
+            try { if (stmt != null) stmt.close(); } catch (SQLException e) {logger.severe(e.getMessage());};
             executorService.shutdown();
         }
     }

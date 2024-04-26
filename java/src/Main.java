@@ -4,11 +4,14 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.lang.Thread;
+import java.util.logging.Logger;
 
 class Main {
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
+
     public static void main(String[] args) throws SQLException {
         Connection connection = getDatabaseConnection();
-        System.out.println("Wait for database initialization...");
+        logger.info("Wait for database initialization...");
         boolean dbInitialized = false;
         while (!dbInitialized) {
             try {
@@ -19,7 +22,7 @@ class Main {
                     int rowCount = resultSet.getInt(1);
                     if (rowCount > 0) {
                         dbInitialized = true;
-                        System.out.println("Database initialized! (" + rowCount + " lines)");
+                        logger.info("Database initialized! (" + rowCount + " lines)");
                     } else {
                         Thread.sleep(2000);
                     }
@@ -27,7 +30,7 @@ class Main {
                 resultSet.close();
                 statement.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.severe(e.getMessage());;
             }
         }
 
@@ -42,7 +45,7 @@ class Main {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            System.out.println("Issue loading JDBC driver : " + e.getMessage());
+            logger.severe("Issue loading JDBC driver : " + e.getMessage());
         }
 
         String url = "jdbc:postgresql://parallel-data-process-database:5432/db";
@@ -53,9 +56,9 @@ class Main {
         try {
             connection = DriverManager.getConnection(url, user, password);
             connection.setAutoCommit(false);
-            System.out.println("Successful database connection.");
+            logger.info("Successful database connection.");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         }
 
         return connection;
