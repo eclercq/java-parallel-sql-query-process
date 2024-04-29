@@ -2,15 +2,18 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Logger;
 
-public class SequentialMethod {
+public class SequentialMethod implements Method {
 
-    private static final Logger logger = Logger.getLogger(Main.class.getName());
+    private String query;
+
+    public SequentialMethod(String _query) {
+        this.query = _query;
+    }
     
-    public static void run(Connection connection) {
-        long startTime = System.currentTimeMillis();
-        logger.info("Starting basic method...");
+    @Override
+    public void run(Connection connection) {
+        System.out.println("Starting basic method...");
 
         Statement stmt = null;
         ResultSet rs = null;
@@ -19,19 +22,14 @@ public class SequentialMethod {
             stmt = connection.createStatement();
             stmt.setFetchSize(1000);
 
-            String query = "SELECT * FROM test_table";
-
-            rs = stmt.executeQuery(query);
+            rs = stmt.executeQuery(this.query);
             while (rs.next()) {
                 DataProcessor.processOneRow(rs);
             }
         } catch (SQLException e) {
-           logger.severe(e.getMessage());;
+           e.printStackTrace();
         }
 
-        long endTime = System.currentTimeMillis();
-        long timeElapsed = endTime - startTime;
-
-        logger.info("Basic method ended : " + timeElapsed + "ms");
+        System.out.println("Basic method ended.");
     }
 }

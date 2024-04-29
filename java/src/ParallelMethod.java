@@ -1,27 +1,23 @@
 import java.sql.Connection;
-import java.util.logging.Logger;
 
-public class ParallelMethod {
+public class ParallelMethod implements Method {
 
-    private static final Logger logger = Logger.getLogger(Main.class.getName());
+    private final int MAX_THREADS = 3;
+    private String query;
 
-    private static final int MAX_THREADS = 3; 
+    public ParallelMethod(String _query) {
+        this.query = _query;
+    }
     
-    public static void run(Connection connection) {
-        long startTime = System.currentTimeMillis();
-        logger.info("Starting enhanced method...");
-
-        String query = "SELECT * FROM test_table";
+    @Override
+    public void run(Connection connection) {
+        System.out.println("Starting enhanced method...");
 
         ParallelQueryExecutor parallelQuery = new ParallelQueryExecutor(MAX_THREADS);
-        parallelQuery.execute(connection, query, rs -> {
+        parallelQuery.execute(connection, this.query, rs -> {
             DataProcessor.processOneRow(rs);
         });
 
-
-        long endTime = System.currentTimeMillis();
-        long timeElapsed = endTime - startTime;
-
-        logger.info("Enhanced method ended : " + timeElapsed + "ms");
+        System.out.println("Enhanced method ended.");
     }
 }
