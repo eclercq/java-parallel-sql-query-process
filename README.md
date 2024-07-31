@@ -17,8 +17,8 @@ Before you begin, ensure you have Docker installed on your machine:
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/your-repository.git
-cd your-repository
+git clone https://github.com/eclercq/java-parallel-sql-query-process.git
+cd java-parallel-sql-query-process
 ```
 
 ## Usage
